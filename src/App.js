@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-useless-constructor */
+import React, { Component } from "react";
+import SearchBar from "./components/SearchBar";
+import VideoDetail from "./components/VideoDetail";
+import VideoList from "./components/VideoList";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import YouTube from "./apis/youtube";
+
+export default class App extends Component {
+  state = {
+    items: [],
+    currentVideo: {},
+  };
+
+  componentDidMount() {
+    YouTube.get("/search", {
+      params: {
+        q: "brighton london",
+      },
+    }).then((response) => {
+      const { data } = response;
+      const items = data.items.map((item) => item);
+      this.setState({ items, currentVideo: items[0] });
+    });
+  }
+
+  onUserSubmit = (term) => {
+    YouTube.get("/search", {
+      params: {
+        q: term,
+      },
+    }).then((response) => {
+      const { data } = response;
+      const items = data.items.map((item) => item);
+      this.setState({ items });
+    });
+  };
+
+  isCurrentVideo = (currentVideo) => {
+    this.setState({ currentVideo });
+  };
+
+  render() {
+    return (
+      <div className="container">
+        <SearchBar onUserSubmit={this.onUserSubmit} />
+        <div className="row">
+          <div className="col-8">
+            <VideoDetail currentVideo={this.state.currentVideo} />
+          </div>
+          <div className="col-4">
+            <VideoList
+              videos={this.state.items}
+              isCurrentVideo={this.isCurrentVideo}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
-
-export default App;

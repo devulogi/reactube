@@ -13,15 +13,7 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    YouTube.get("/search", {
-      params: {
-        q: "brighton london",
-      },
-    }).then((response) => {
-      const { data } = response;
-      const items = data.items.map((item) => item);
-      this.setState({ items, currentVideo: items[0] });
-    });
+    this.onUserSubmit("brighton beach");
   }
 
   onUserSubmit = (term) => {
@@ -32,7 +24,7 @@ export default class App extends Component {
     }).then((response) => {
       const { data } = response;
       const items = data.items.map((item) => item);
-      this.setState({ items });
+      this.setState({ items, currentVideo: items[0] });
     });
   };
 

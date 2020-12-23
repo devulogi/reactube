@@ -6,7 +6,7 @@ export default axios.create({
     part: "snippet",
     type: "video",
     maxResults: 5,
-    key: "AIzaSyBJwS1LahC2aVCiI9PLcx3JfX1BdJZ_bZU",
+    key: "AIzaSyBhpcrP3kFPG7e_AV9lIxHzOZ0xBPOzjCk",
     q: "brighton london",
   },
 });
